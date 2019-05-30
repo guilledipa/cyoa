@@ -19,13 +19,16 @@ var (
 	port    = flag.Int("port", 8080, "Port to listen on.")
 )
 
+type bookHandler struct {
+}
+
 func main() {
 	flag.Parse()
 
-	http.Handle("/book", new(countHandler))
+	//http.Handle("/book", new(bookHandler))
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
 
-	b, err := cyoa.parseJSON(*rawBook)
+	b, err := cyoa.ParseJSON(*rawBook)
 	if err != nil {
 		log.Fatal(err)
 	}

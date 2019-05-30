@@ -7,31 +7,33 @@ import (
 	"io/ioutil"
 )
 
-// book is a Choose Your Own Adventure book.
+// Book is a Choose Your Own Adventure book.
 // Each key is the name of a chapter, and each value is a chapter struct.
-type book map[string]chapter
+type Book map[string]Chapter
 
-// chapter is cyoa chapter.
-type chapter struct {
+// Chapter is cyoa chapter.
+type Chapter struct {
 	Title   string       `json:"title"`
 	Story   []string     `json:"story"`
-	Options []arcOptions `json:"options"`
+	Options []ArcOptions `json:"options"`
 }
 
-// arcOptions are the choices offered at the end of a chapter.
+// ArcOptions are the choices offered at the end of a chapter.
 // Text is the text shown to the readers; Arc is the key of a chapter in the
 // Book struct.
-type arcOptions struct {
+type ArcOptions struct {
 	Text string `json:"text"`
 	Arc  string `json:"arc"`
 }
 
-func parseJSON(jsonStoryFile string) (book, error) {
+// ParseJSON reads a file containing a json formatted cyoa book and returns a
+// Book map or error.
+func ParseJSON(jsonStoryFile string) (Book, error) {
 	jsonData, err := ioutil.ReadFile(jsonStoryFile)
 	if err != nil {
 		return nil, err
 	}
-	b := new(book)
+	b := new(Book)
 	if err := json.Unmarshal(jsonData, b); err != nil {
 		return nil, err
 	}
