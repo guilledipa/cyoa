@@ -22,10 +22,14 @@ var (
 type bookHandler struct {
 }
 
+func (h *bookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello world!")
+}
+
 func main() {
 	flag.Parse()
 
-	//http.Handle("/book", new(bookHandler))
+	http.Handle("/book", new(bookHandler))
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
 
 	b, err := cyoa.ParseJSON(*rawBook)
