@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/guilledipa/cyoa"
 )
 
 var (
