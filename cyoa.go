@@ -90,10 +90,10 @@ func (b *BookHandler) parseJSON(jsonStoryFile string) error {
 
 // NewBookHandler creates a BookHandler instance.
 func NewBookHandler(jsonStoryFile string) (*BookHandler, error) {
-	b := new(BookHandler)
+	var b BookHandler
 	if err := b.parseJSON(jsonStoryFile); err != nil {
 		return nil, err
 	}
 	b.bookTemplate = template.Must(template.New("Default").Parse(defaultTemplate))
-	return b, nil
+	return &b, nil
 }
