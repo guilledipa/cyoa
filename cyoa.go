@@ -4,7 +4,11 @@ package cyoa
 
 import (
 	"encoding/json"
+	"html/template"
 	"io/ioutil"
+	"log"
+	"net/http"
+	"strings"
 )
 
 // Book is a Choose Your Own Adventure book.
@@ -24,6 +28,24 @@ type Chapter struct {
 type ArcOptions struct {
 	Text string `json:"text"`
 	Arc  string `json:"arc"`
+}
+
+// BookHandler has functions to render a web cyoa.
+type BookHandler struct {
+	book         Book
+	bookTemplate *template.Template
+}
+
+func (b *bookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	chapterTitle := strings.TrimLeft(r.URL.Path[1:], "/")
+	if chapter, ok := b.book[chapterTitle]; ok {
+		err := b.bookTemplate.Execute(w, chapter)
+		if err != nil {
+			log.Printf("Template execute: %v", err)
+			http.Error(w, "Something went wrong parsing a chapter...", http.StatusInternalServerError)
+		}
+	}
+	http.Error(w, "Chapter not found.", http.StatusNotFound)
 }
 
 // ParseJSON reads a file containing a json formatted cyoa book and returns a

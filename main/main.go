@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/guilledipa/cyoa"
 )
@@ -19,22 +20,22 @@ var (
 	port    = flag.Int("port", 8080, "Port to listen on.")
 )
 
-type bookHandler struct {
-}
 
-func (h *bookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello world!")
-}
 
 func main() {
 	flag.Parse()
 
-	http.Handle("/book", new(bookHandler))
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
-
-	b, err := cyoa.ParseJSON(*rawBook)
+	b := new(bookHandler)
+	var err error
+	b.book, err = cyoa.ParseJSON(*rawBook)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	mux := http.NewServeMux()
+	mux.Handle("/intro", b)
+
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), mux))
+
 	fmt.Println(b)
 }
