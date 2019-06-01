@@ -32,7 +32,7 @@ type ArcOptions struct {
 
 // BookHandler has functions to render a web cyoa.
 type BookHandler struct {
-	book         Book
+	Book         Book
 	bookTemplate *template.Template
 }
 

@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/guilledipa/cyoa"
 )
@@ -20,14 +19,12 @@ var (
 	port    = flag.Int("port", 8080, "Port to listen on.")
 )
 
-
-
 func main() {
 	flag.Parse()
 
-	b := new(bookHandler)
+	b := new(cyoa.BookHandler)
 	var err error
-	b.book, err = cyoa.ParseJSON(*rawBook)
+	b.Book, err = cyoa.ParseJSON(*rawBook)
 	if err != nil {
 		log.Fatal(err)
 	}
