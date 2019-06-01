@@ -22,13 +22,13 @@ var defaultTemplate = `
   <body>
     <section class="page">
       <h1>{{.Title}}</h1>
-      {{range .Paragraphs}}
+      {{range .Story}}
         <p>{{.}}</p>
       {{end}}
       {{if .Options}}
         <ul>
-        {{range .Options}}
-          <li><a href="/{{.Chapter}}">{{.Text}}</a></li>
+        {{range .ArcOptions}}
+          <li><a href="/{{.Arc}}">{{.Text}}</a></li>
         {{end}}
         </ul>
       {{else}}
