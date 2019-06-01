@@ -50,14 +50,13 @@ func (b *BookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // ParseJSON reads a file containing a json formatted cyoa book and returns a
 // Book map or error.
-func ParseJSON(jsonStoryFile string) (Book, error) {
+func (b *BookHandler) ParseJSON(jsonStoryFile string) error {
 	jsonData, err := ioutil.ReadFile(jsonStoryFile)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	b := new(Book)
-	if err := json.Unmarshal(jsonData, b); err != nil {
-		return nil, err
+	if err := json.Unmarshal(jsonData, b.Book); err != nil {
+		return err
 	}
-	return *b, nil
+	return nil
 }

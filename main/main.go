@@ -23,9 +23,7 @@ func main() {
 	flag.Parse()
 
 	b := new(cyoa.BookHandler)
-	var err error
-	b.Book, err = cyoa.ParseJSON(*rawBook)
-	if err != nil {
+	if err := b.ParseJSON(*rawBook); err != nil {
 		log.Fatal(err)
 	}
 
