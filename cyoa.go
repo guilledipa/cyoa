@@ -27,7 +27,7 @@ var defaultTemplate = `
       {{end}}
       {{if .Options}}
         <ul>
-        {{range .ArcOptions}}
+        {{range .Options}}
           <li><a href="/{{.Arc}}">{{.Text}}</a></li>
         {{end}}
         </ul>
