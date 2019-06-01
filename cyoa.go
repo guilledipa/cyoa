@@ -90,7 +90,7 @@ func (b *BookHandler) parseJSON(jsonStoryFile string) error {
 
 // NewBookHandler creates a BookHandler instance.
 func NewBookHandler(jsonStoryFile string) (*BookHandler, error) {
-	var b *BookHandler
+	b := new(BookHandler)
 	if err := b.parseJSON(jsonStoryFile); err != nil {
 		return nil, err
 	}
