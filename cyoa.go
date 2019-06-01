@@ -32,13 +32,13 @@ type ArcOptions struct {
 
 // BookHandler has functions to render a web cyoa.
 type BookHandler struct {
-	Book         Book
+	Book
 	bookTemplate *template.Template
 }
 
 func (b *BookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	chapterTitle := strings.TrimLeft(r.URL.Path[1:], "/")
-	if chapter, ok := b.book[chapterTitle]; ok {
+	if chapter, ok := b.Book[chapterTitle]; ok {
 		err := b.bookTemplate.Execute(w, chapter)
 		if err != nil {
 			log.Printf("Template execute: %v", err)
