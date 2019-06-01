@@ -82,7 +82,7 @@ func (b *BookHandler) parseJSON(jsonStoryFile string) error {
 	if err != nil {
 		return fmt.Errorf("parseJSON read file: %v", err)
 	}
-	if err := json.Unmarshal(jsonData, b.Book); err != nil {
+	if err := json.Unmarshal(jsonData, &b.Book); err != nil {
 		return fmt.Errorf("parseJSON could not unmarshall: %v", err)
 	}
 	return nil
