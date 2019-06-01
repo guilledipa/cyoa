@@ -71,6 +71,7 @@ func (b *BookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Template execute: %v", err)
 			http.Error(w, "Something went wrong parsing a chapter...", http.StatusInternalServerError)
 		}
+		return
 	}
 	http.Error(w, "Chapter not found.", http.StatusNotFound)
 }
