@@ -4,6 +4,7 @@ package cyoa
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -79,17 +80,17 @@ func (b *BookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (b *BookHandler) parseJSON(jsonStoryFile string) error {
 	jsonData, err := ioutil.ReadFile(jsonStoryFile)
 	if err != nil {
-		return err
+		return fmt.Errorf("parseJSON read file: %v", err)
 	}
 	if err := json.Unmarshal(jsonData, b.Book); err != nil {
-		return err
+		return fmt.Errorf("parseJSON could not unmarshall: %v", err)
 	}
 	return nil
 }
 
 // NewBookHandler creates a BookHandler instance.
 func NewBookHandler(jsonStoryFile string) (*BookHandler, error) {
-	b := new(BookHandler)
+	var b *BookHandler
 	if err := b.parseJSON(jsonStoryFile); err != nil {
 		return nil, err
 	}
