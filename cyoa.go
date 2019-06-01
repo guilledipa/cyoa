@@ -11,6 +11,32 @@ import (
 	"strings"
 )
 
+var defaultTemplate = `
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Choose Your Own Adventure</title>
+  </head>
+  <body>
+    <section class="page">
+      <h1>{{.Title}}</h1>
+      {{range .Paragraphs}}
+        <p>{{.}}</p>
+      {{end}}
+      {{if .Options}}
+        <ul>
+        {{range .Options}}
+          <li><a href="/{{.Chapter}}">{{.Text}}</a></li>
+        {{end}}
+        </ul>
+      {{else}}
+        <h3>The End</h3>
+      {{end}}
+    </section>
+  </body>
+</html>`
+
 // Book is a Choose Your Own Adventure book.
 // Each key is the name of a chapter, and each value is a chapter struct.
 type Book map[string]Chapter
@@ -48,9 +74,9 @@ func (b *BookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Chapter not found.", http.StatusNotFound)
 }
 
-// ParseJSON reads a file containing a json formatted cyoa book and returns a
+// parseJSON reads a file containing a json formatted cyoa book and returns a
 // Book map or error.
-func (b *BookHandler) ParseJSON(jsonStoryFile string) error {
+func (b *BookHandler) parseJSON(jsonStoryFile string) error {
 	jsonData, err := ioutil.ReadFile(jsonStoryFile)
 	if err != nil {
 		return err
@@ -59,4 +85,14 @@ func (b *BookHandler) ParseJSON(jsonStoryFile string) error {
 		return err
 	}
 	return nil
+}
+
+// NewBookHandler creates a BookHandler instance.
+func NewBookHandler(jsonStoryFile string) (*BookHandler, error) {
+	b := new(BookHandler)
+	if err := b.parseJSON(jsonStoryFile); err != nil {
+		return nil, err
+	}
+	b.bookTemplate = template.Must(template.New("Default").Parse(defaultTemplate))
+	return b, nil
 }
