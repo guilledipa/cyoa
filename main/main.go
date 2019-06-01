@@ -28,7 +28,7 @@ func main() {
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle("/intro", b)
+	mux.Handle("/", b)
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), mux))
 
