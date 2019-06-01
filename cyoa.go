@@ -36,7 +36,7 @@ type BookHandler struct {
 	bookTemplate *template.Template
 }
 
-func (b *bookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (b *BookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	chapterTitle := strings.TrimLeft(r.URL.Path[1:], "/")
 	if chapter, ok := b.book[chapterTitle]; ok {
 		err := b.bookTemplate.Execute(w, chapter)
